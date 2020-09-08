@@ -14,16 +14,16 @@ import { mapActions } from 'vuex'
 
 export default {
   props: ['number'],
-  methods: {
-    ...mapActions(['showPile']),
-  },
   computed: {
     pile() {
       return this.$store.state.players[this.number]
     },
     hand() {
-      return this.$store.state.players[this.number].cards
+      return this.$store.state.players[this.number].cards[0]
     },
+  },
+  methods: {
+    ...mapActions(['showPile']),
   },
 }
 </script>

@@ -31,29 +31,37 @@ export const actions = {
       .get(`https://deckofcardsapi.com/api/deck/new/draw/?jokers_enabled=true`)
       .then((response) => {
         commit('newDeck', response.data.deck_id)
-        for (let i = 0; i < 5; i++) {
-          for (let i = 0; i < state.players.length; i++) {
-            dispatch('drawCard', i)
-          }
+        for (let i = 0; i < state.players.length; i++) {
+          dispatch('drawCard', {
+            player: i,
+            count: 5,
+          })
         }
       })
   },
-  async drawCard({ commit, state, dispatch }, payload) {
+  async drawCard({ state, dispatch }, payload) {
     await this.$axios
-      .get(`https://deckofcardsapi.com/api/deck/${state.deckID}/draw/?count=1`)
+      .get(
+        `https://deckofcardsapi.com/api/deck/${state.deckID}/draw/?count=${payload.count}`
+      )
       .then((response) => {
+        const cards = []
+        response.data.cards.forEach((card) => {
+          cards.push(card.code)
+        })
+        const playerCards = cards.join(',')
         dispatch('addToPile', {
-          playerID: payload,
-          card: response.data.cards[0].code,
+          playerID: payload.player,
+          cards: playerCards,
         })
       })
   },
-  async addToPile({ commit, state, dispatch }, payload) {
+  async addToPile({ state, dispatch }, payload) {
     await this.$axios
       .get(
-        `https://deckofcardsapi.com/api/deck/${state.deckID}/pile/${payload.playerID}/add/?cards=${payload.card}`
+        `https://deckofcardsapi.com/api/deck/${state.deckID}/pile/${payload.playerID}/add/?cards=${payload.cards}`
       )
-      .then(() => {
+      .then((response) => {
         dispatch('showPile', payload.playerID)
       })
   },
@@ -65,7 +73,7 @@ export const actions = {
       .then((response) => {
         commit('addToPlayerPile', {
           playerID: payload,
-          cards: response.data.piles[payload].cards[0],
+          cards: response.data.piles[payload].cards,
         })
       })
   },
