@@ -3,7 +3,7 @@
     <div>
       <h1 class="title">Cards</h1>
       <p>Players: {{ players }}</p>
-      <GameStart />
+      <GameStart v-show="!active" />
     </div>
   </div>
 </template>
@@ -17,6 +17,9 @@ export default {
   computed: {
     players() {
       return this.$store.state.players
+    },
+    active() {
+      return this.$store.state.activeGame
     },
   },
 }

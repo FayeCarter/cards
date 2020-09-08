@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button>StartGame</button>
-    <form action="/action_page.php">
+    <button v-if="!active" @click="active = true">StartGame</button>
+    <form v-else action="/action_page.php">
       <label for="players">Select Players (between 1 and 2):</label>
       <input
         id="players"
@@ -11,8 +11,7 @@
         min="1"
         max="2"
       />
-      <input type="submit" value="Play" />
-      <button @click.prevent="setPlayers(players)">Add</button>
+      <button @click.prevent="startGame">Play</button>
     </form>
   </div>
 </template>
@@ -23,11 +22,16 @@ import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
+      active: false,
       players: '1',
     }
   },
   methods: {
-    ...mapMutations(['setPlayers']),
+    ...mapMutations(['setPlayers', 'newGame']),
+    startGame() {
+      this.setPlayers(this.players)
+      this.newGame()
+    },
   },
 }
 </script>
