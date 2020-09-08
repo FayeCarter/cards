@@ -1,12 +1,17 @@
 export const state = () => ({
-  players: '0',
+  players: [],
   activeGame: false,
   results: {},
 })
 
 export const mutations = {
   setPlayers(state, payload) {
-    state.players = payload
+    for (let i = 0; i < payload; i++) {
+      state.players.push({
+        cards: {},
+        score: 0,
+      })
+    }
   },
   newGame(state) {
     state.activeGame = true
@@ -19,7 +24,7 @@ export const mutations = {
 export const actions = {
   async dealCards({ commit, state }) {
     commit('newGame')
-    const cards = state.players * 5
+    const cards = state.players.length * 5
     await this.$axios
       .get(
         `https://deckofcardsapi.com/api/deck/new/draw/?count=${cards}&jokers_enabled=true`
