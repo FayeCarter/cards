@@ -8,7 +8,7 @@ export const mutations = {
   setPlayers(state, payload) {
     for (let i = 0; i < payload; i++) {
       state.players.push({
-        cards: {},
+        cards: [],
         score: 0,
       })
     }
@@ -20,19 +20,22 @@ export const mutations = {
     state.deckID = payload
   },
   addToPlayerPile(state, payload) {
-    console.log(state.players)
-    state.players[payload.playerID].cards = payload.cards
+    state.players[payload.playerID].cards.push(payload.cards)
   },
 }
 
 export const actions = {
-  async dealCards({ commit, dispatch }) {
+  async dealCards({ commit, dispatch, state }) {
     commit('startGame')
     await this.$axios
       .get(`https://deckofcardsapi.com/api/deck/new/draw/?jokers_enabled=true`)
       .then((response) => {
         commit('newDeck', response.data.deck_id)
-        dispatch('drawCard', 0)
+        for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < state.players.length; i++) {
+            dispatch('drawCard', i)
+          }
+        }
       })
   },
   async drawCard({ commit, state, dispatch }, payload) {
@@ -60,11 +63,9 @@ export const actions = {
         `https://deckofcardsapi.com/api/deck/${state.deckID}/pile/${payload}/list/`
       )
       .then((response) => {
-        console.log('HERE')
-        console.log(response)
         commit('addToPlayerPile', {
           playerID: payload,
-          cards: response.data.piles[payload].cards,
+          cards: response.data.piles[payload].cards[0],
         })
       })
   },
