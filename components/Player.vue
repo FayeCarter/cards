@@ -1,20 +1,20 @@
 <template>
   <div class="container">
-    <ul>
-      <li v-for="card in cardDeck.cards" :key="card.code">
-        <img :src="card.image" :alt="card.code" />
-      </li>
-    </ul>
+    <h1>PLAYER</h1>
+    <p>{{ pile }}</p>
+    <ul></ul>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
+  methods: {
+    ...mapActions(['showPile']),
+  },
   computed: {
-    cardDeck() {
-      return this.$store.state.results
-    },
-    players() {
+    pile() {
       return this.$store.state.players
     },
   },

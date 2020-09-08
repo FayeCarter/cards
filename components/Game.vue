@@ -1,22 +1,15 @@
 <template>
   <div class="container">
-    <ul>
-      <li v-for="card in cardDeck.cards" :key="card.code">
-        <img :src="card.image" :alt="card.code" />
-      </li>
-    </ul>
+    <Player></Player>
   </div>
 </template>
 
 <script>
+import Player from '@/components/Player'
+
 export default {
-  computed: {
-    cardDeck() {
-      return this.$store.state.results
-    },
-    players() {
-      return this.$store.state.players
-    },
+  components: {
+    Player,
   },
 }
 </script>
