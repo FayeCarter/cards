@@ -18,6 +18,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   data() {
@@ -27,10 +28,11 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setPlayers', 'newGame']),
+    ...mapMutations(['setPlayers']),
+    ...mapActions(['dealCards']),
     startGame() {
       this.setPlayers(this.players)
-      this.newGame()
+      this.dealCards()
     },
   },
 }

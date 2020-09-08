@@ -18,6 +18,7 @@ export const mutations = {
 
 export const actions = {
   async dealCards({ commit, state }) {
+    commit('newGame')
     const cards = state.players * 5
     await this.$axios
       .get(
