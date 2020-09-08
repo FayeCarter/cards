@@ -12,16 +12,22 @@
         max="2"
       />
       <input type="submit" value="Play" />
+      <button @click.prevent="setPlayers(players)">Add</button>
     </form>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   data() {
     return {
       players: '1',
     }
+  },
+  methods: {
+    ...mapMutations(['setPlayers']),
   },
 }
 </script>
