@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="player">
     <h1>PLAYER {{ number + 1 }}</h1>
-    <ul>
+    <ul class="hand">
       <li v-for="(card, index) in hand" :key="index">
         <img :src="card.image" :alt="card.code" />
       </li>
@@ -28,4 +28,18 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="sass" scoped>
+.player
+  margin: 100px
+
+.hand
+  display: flex
+
+  li
+    list-style: none
+    margin-left: -50px
+    width: 100px;
+
+  li:first-child
+    margin-left: 0
+</style>

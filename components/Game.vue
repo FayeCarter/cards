@@ -26,4 +26,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="sass" scoped>
+.players
+  display: flex
+  align-content: flex-end
+  height: 100%
+</style>
