@@ -19,7 +19,7 @@ export const mutations = {
   newDeck(state, payload) {
     state.deckID = payload
   },
-  addToPlayerPile(state, payload) {
+  addToPile(state, payload) {
     state.players[payload.playerID].cards.push(payload.cards)
   },
 }
@@ -71,7 +71,7 @@ export const actions = {
         `https://deckofcardsapi.com/api/deck/${state.deckID}/pile/${payload}/list/`
       )
       .then((response) => {
-        commit('addToPlayerPile', {
+        commit('addToPile', {
           playerID: payload,
           cards: response.data.piles[payload].cards,
         })

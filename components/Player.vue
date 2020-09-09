@@ -56,6 +56,6 @@ export default {
   .card:first-child
     margin-left: 0
 
-  .selectedCard
+  .card:hover, .selectedCard
     margin-top: -50px
 </style>
