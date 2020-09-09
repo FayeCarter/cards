@@ -3,6 +3,8 @@ export const state = () => ({
   activeGame: false,
   deckID: '',
   pile: [],
+  currentPlayerCard: '',
+  topCard: {},
 })
 
 export const mutations = {
@@ -11,20 +13,33 @@ export const mutations = {
       state.players.push({
         cards: [],
         score: 0,
+        currentTurn: false,
       })
     }
   },
   startGame(state) {
     state.activeGame = true
+    state.players[0].currentTurn = true
   },
   newDeck(state, payload) {
     state.deckID = payload
   },
   addToPlayerPile(state, payload) {
-    state.players[payload.playerID].cards.push(payload.cards)
+    state.players[payload.playerID].cards = payload.cards
   },
   addToPile(state, payload) {
     state.pile.push(payload[0])
+    state.topCard = {
+      code: payload[0].code,
+      image: payload[0].image,
+    }
+  },
+  setPlayerCard(state, payload) {
+    state.currentPlayerCard = payload
+  },
+  setTurn(state, payload) {
+    console.log(state.players)
+    state.players[payload].currentTurn = false
   },
 }
 

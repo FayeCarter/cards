@@ -1,6 +1,7 @@
 <template>
   <div class="player">
     <h1>PLAYER {{ number + 1 }}</h1>
+    <p>{{ currentTurn }}</p>
     <div class="hand">
       <li v-for="(card, index) in hand" :key="index" class="card">
         <img
@@ -15,6 +16,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
@@ -29,13 +31,18 @@ export default {
       return this.$store.state.players[this.number]
     },
     hand() {
-      return this.$store.state.players[this.number].cards[0]
+      return this.$store.state.players[this.number].cards
+    },
+    currentTurn() {
+      return this.$store.state.players[this.number].currentTurn
     },
   },
   methods: {
+    ...mapMutations(['setPlayerCard']),
     ...mapActions(['showPile']),
     selectCard(event) {
       this.selected = event.target.alt
+      this.setPlayerCard({ code: event.target.alt, pile: this.number })
     },
   },
 }
