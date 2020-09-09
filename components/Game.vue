@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <p>Game</p>
-    <Deck />
+    <div class="deck">
+      <Deck />
+      <Pile />
+    </div>
     <div class="players">
       <Player
         v-for="(player, index) in players"
@@ -15,11 +18,13 @@
 <script>
 import Player from '@/components/Player'
 import Deck from '@/components/Deck'
+import Pile from '@/components/Pile'
 
 export default {
   components: {
     Player,
     Deck,
+    Pile,
   },
   computed: {
     players() {
@@ -34,4 +39,7 @@ export default {
   display: flex
   align-content: flex-end
   height: 100%
+
+.deck
+  display: flex
 </style>

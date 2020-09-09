@@ -2,6 +2,7 @@ export const state = () => ({
   players: [],
   activeGame: false,
   deckID: '',
+  pile: [],
 })
 
 export const mutations = {
@@ -19,8 +20,11 @@ export const mutations = {
   newDeck(state, payload) {
     state.deckID = payload
   },
-  addToPile(state, payload) {
+  addToPlayerPile(state, payload) {
     state.players[payload.playerID].cards.push(payload.cards)
+  },
+  addToPile(state, payload) {
+    state.pile.push(payload[0])
   },
 }
 
@@ -37,6 +41,10 @@ export const actions = {
             count: 5,
           })
         }
+        dispatch('drawCard', {
+          player: 'pile',
+          count: 1,
+        })
       })
   },
   async drawCard({ state, dispatch }, payload) {
@@ -49,7 +57,12 @@ export const actions = {
         response.data.cards.forEach((card) => {
           cards.push(card.code)
         })
-        const playerCards = cards.join(',')
+        let playerCards = ''
+        if (cards.length === 1) {
+          playerCards = response.data.cards[0].code
+        } else {
+          playerCards = cards.join(',')
+        }
         dispatch('addToPile', {
           playerID: payload.player,
           cards: playerCards,
@@ -71,10 +84,14 @@ export const actions = {
         `https://deckofcardsapi.com/api/deck/${state.deckID}/pile/${payload}/list/`
       )
       .then((response) => {
-        commit('addToPile', {
-          playerID: payload,
-          cards: response.data.piles[payload].cards,
-        })
+        if (payload === 'pile') {
+          commit('addToPile', response.data.piles[payload].cards)
+        } else {
+          commit('addToPlayerPile', {
+            playerID: payload,
+            cards: response.data.piles[payload].cards,
+          })
+        }
       })
   },
 }

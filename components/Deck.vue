@@ -9,7 +9,7 @@ export default {}
 <style lang="sass" scoped>
 .deck
   width: 227px;
-  height: 300px;
+  height: 315px;
   border: 1px solid black
   border-radius: 15px
   padding: 25px
