@@ -1,11 +1,16 @@
 <template>
   <div class="player">
     <h1>PLAYER {{ number + 1 }}</h1>
-    <ul class="hand">
-      <li v-for="(card, index) in hand" :key="index">
-        <img :src="card.image" :alt="card.code" />
+    <div class="hand">
+      <li v-for="(card, index) in hand" :key="index" class="card">
+        <img
+          :class="{ selectedCard: selected === card.code }"
+          :src="card.image"
+          :alt="card.code"
+          @click="selectCard"
+        />
       </li>
-    </ul>
+    </div>
   </div>
 </template>
 
@@ -14,6 +19,11 @@ import { mapActions } from 'vuex'
 
 export default {
   props: ['number'],
+  data() {
+    return {
+      selected: '',
+    }
+  },
   computed: {
     pile() {
       return this.$store.state.players[this.number]
@@ -24,6 +34,9 @@ export default {
   },
   methods: {
     ...mapActions(['showPile']),
+    selectCard(event) {
+      this.selected = event.target.alt
+    },
   },
 }
 </script>
@@ -35,11 +48,14 @@ export default {
 .hand
   display: flex
 
-  li
+  .card
     list-style: none
     margin-left: -50px
     width: 100px;
 
-  li:first-child
+  .card:first-child
     margin-left: 0
+
+  .selectedCard
+    margin-top: -50px
 </style>
