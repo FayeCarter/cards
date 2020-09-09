@@ -22,16 +22,18 @@ export default {
   },
   methods: {
     ...mapMutations(['setTurn']),
-    ...mapActions(['addToPile', 'showPile']),
+    ...mapActions(['addToPile']),
     switchCard() {
       if (this.playerCard !== '') {
         this.addToPile({
           playerID: this.playerCard.pile,
           cards: this.topCard.code,
         })
-        this.showPile(this.playerCard.pile)
-        this.setTurn(this.playerCard.pile)
-        console.log(this.$store.state.players)
+        this.addToPile({
+          playerID: 'pile',
+          cards: this.playerCard.code,
+        })
+        this.setTurn(this.playerCard)
       }
     },
   },

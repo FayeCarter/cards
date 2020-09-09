@@ -38,8 +38,7 @@ export const mutations = {
     state.currentPlayerCard = payload
   },
   setTurn(state, payload) {
-    console.log(state.players)
-    state.players[payload].currentTurn = false
+    state.players[payload.pile].currentTurn = false
   },
 }
 
